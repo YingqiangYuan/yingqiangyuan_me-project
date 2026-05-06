@@ -1,0 +1,37 @@
+[project]
+name = "yingqiangyuan_me"
+version = "0.1.1"
+requires-python = ">=3.12,<4.0"
+
+# Core Dependencies
+dependencies = [
+    "func-args>=1.0.1,<2.0.0",      # inspect function/method arguments
+    "pydantic>=2.11.10,<3.0.0",     # Data validation and settings management using Python type annotations
+    "fastapi>=0.118.0,<1.0.0",      # Web framework
+    "uvicorn>=0.38.0,<1.0.0",       # ASGI server
+    "boto3>=1.42.0,<2.0.0",         # AWS SDK for Python
+    "boto3-dataclass[bedrock-runtime]>=1.40.0,<2.0.0", # Transform boto3 dictionaries into type-safe dataclasses with full autocomplete support.
+    "boto-session-manager>=1.8.1,<2.0.0",
+    "pynamodb>=6.1.0,<7.0.0",       # DynamoDB SDK
+    "pynamodb-session-manager>=0.1.2,<1.0.0",
+    "vercel-ai-sdk-mate>=5.0.1,<6.0.0", # Vercel AI SDK Python adaptor library
+    "rich>=14.0.0,<15.0.0",         # Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal
+    "python-dotenv>=1.2.1,<2.0.0",  # Read key-value pairs from a .env file and set them as environment variables
+]
+
+[project.optional-dependencies]
+
+# (Unit/Coverage/Integration/Load) Test dependenceies
+test = [
+    "pytest>=8.2.2,<9.0.0", # Testing framework
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["yingqiangyuan_me*"]
+exclude = [
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
