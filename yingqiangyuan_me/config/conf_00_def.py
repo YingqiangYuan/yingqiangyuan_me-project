@@ -36,7 +36,7 @@ How it works
 
 Example usage::
 
-    from learn_personal_portfolio_ai.config import config
+    from smb_loan_ai.config import config
 
     # Anywhere in your code - no environment checks needed
     session = boto3.Session(
@@ -72,7 +72,7 @@ That's it. No need to add ``if runtime.is_xxx()`` checks anywhere else.
 import os
 import dataclasses
 
-from .runtime import runtime
+from ..runtime import runtime
 
 
 @dataclasses.dataclass
@@ -96,27 +96,32 @@ class Config:
     aws_access_key_id: str | None = dataclasses.field(default=None)
     aws_secret_access_key: str | None = dataclasses.field(default=None)
     model_id: str | None = dataclasses.field(default="us.amazon.nova-micro-v1:0")
-    # max_message_length: int = dataclasses.field(default=1000)
+
+    @classmethod
+    def _load_env_var(cls):
+        return cls(
+            aws_region="us-east-1",
+            aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
+            aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
+        )
 
     @classmethod
     def new_in_local_runtime(cls):
         """
         use default credential chain (~/.aws/credentials or IAM role)
         """
-        return cls(
-            aws_region="us-east-1",
-        )
+        from dotenv import load_dotenv
+
+        load_dotenv()
+
+        return cls._load_env_var()
 
     @classmethod
     def new_in_vercel_runtime(cls):
         """
         explicit credentials from environment variables (serverless has no ~/.aws)
         """
-        return cls(
-            aws_region="us-east-1",
-            aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
-            aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
-        )
+        return cls._load_env_var()
 
     @classmethod
     def new(cls):
@@ -138,6 +143,3 @@ class Config:
             return cls.new_in_vercel_runtime()
         else:  # pragma: no cover
             raise RuntimeError
-
-
-config = Config.new()
