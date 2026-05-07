@@ -16,7 +16,7 @@ export const achievementStats: AchievementStat[] = [
       "Text-to-SQL",
       "Python",
     ],
-    href: "",
+    href: "https://agentic-bi-app-for-smb-analytics-project.yingqiangyuan.me/",
     accent: "cyan",
   },
   {
@@ -32,7 +32,7 @@ export const achievementStats: AchievementStat[] = [
       "Adversarial Testing",
       "Python",
     ],
-    href: "",
+    href: "https://yq-prompt-risk.readthedocs.io/en/latest/",
     accent: "violet",
   },
   {
