@@ -96,6 +96,10 @@ class Config:
     aws_access_key_id: str | None = dataclasses.field(default=None)
     aws_secret_access_key: str | None = dataclasses.field(default=None)
     model_id: str | None = dataclasses.field(default="us.amazon.nova-micro-v1:0")
+    dynamodb_table_name_quota: str | None = dataclasses.field(default=None)
+    quota_max_invoke_per_month: int = dataclasses.field(default=1000)
+    quota_max_input_token_per_month: int = dataclasses.field(default=50_000_000)
+    quota_max_output_token_per_month: int = dataclasses.field(default=10_000_000)
 
     @classmethod
     def _load_env_var(cls):
@@ -103,6 +107,7 @@ class Config:
             aws_region="us-east-1",
             aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
             aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
+            dynamodb_table_name_quota=os.environ["DYNAMODB_TABLE_NAME_QUOTA"],
         )
 
     @classmethod

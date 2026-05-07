@@ -29,6 +29,9 @@ from yingqiangyuan_me.ai_sdk_adapter import debug_ai_sdk_request
 from yingqiangyuan_me.ai_sdk_adapter import ai_sdk_message_generator
 from yingqiangyuan_me.ai_sdk_adapter import get_last_user_message_text
 from yingqiangyuan_me.multi_round_bedrock_runtime_chat_manager import ChatSession
+from yingqiangyuan_me.quota import check_quota
+from yingqiangyuan_me.quota import increment_usage
+from yingqiangyuan_me.quota import QuotaExceededError
 # fmt: on
 
 # Add project root to sys.path for module imports
@@ -90,6 +93,28 @@ async def handle_chat_data(request: Request, protocol: str = Query("data")):
     #     response.headers["Connection"] = "keep-alive"
     #     return response
 
+    # --- Enforce monthly quota before spending tokens ---
+    try:
+        check_quota(one.bsm)
+    except QuotaExceededError as e:
+        debug(f"[Quota] blocked: {e}")
+        response = StreamingResponse(
+            ai_sdk_message_generator(
+                output_text=(
+                    "Heads up — this is a personal demo, and I've set a "
+                    "monthly token budget on it to keep my cloud bill from "
+                    "going wild. We've hit that cap for this billing cycle, "
+                    "so the chat is paused until the budget resets next "
+                    "month. Thanks for trying it out!"
+                ),
+            ),
+            media_type="text/event-stream",
+        )
+        response.headers["x-vercel-ai-ui-message-stream"] = "v1"
+        response.headers["Cache-Control"] = "no-cache"
+        response.headers["Connection"] = "keep-alive"
+        return response
+
     # --- Initialize Bedrock chat session ---
     # Uses cross-region inference profile for automatic load balancing across regions
     chat_session = ChatSession(
@@ -145,6 +170,21 @@ async def handle_chat_data(request: Request, protocol: str = Query("data")):
 
     # Log response for debugging
     output_text = chat_session.debug_response(response)
+
+    # --- Atomically record token spend for this invocation ---
+    # Bedrock Converse returns per-call token totals on response.usage; we feed
+    # those straight into the monthly DynamoDB counter via an atomic ADD so
+    # concurrent requests can't lose updates.
+    try:
+        input_tokens = int(response.usage.inputTokens or 0)
+        output_tokens = int(response.usage.outputTokens or 0)
+        increment_usage(
+            one.bsm,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+        )
+    except Exception as e:  # pragma: no cover - never let metering break a reply
+        debug(f"[Quota] increment failed: {e}")
 
     # --- Return SSE streaming response ---
     # AI SDK v5 uses "x-vercel-ai-ui-message-stream" header (not "x-vercel-ai-data-stream")
