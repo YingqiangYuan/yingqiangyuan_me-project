@@ -1,22 +1,27 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter, Bebas_Neue, Source_Sans_3 } from "next/font/google"
+import { Unbounded, Manrope, JetBrains_Mono } from "next/font/google"
 import { generateSEOMetadata } from "@/lib/seo/generateMetadata"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const bebasNeue = Bebas_Neue({
-  weight: "400",
+const unbounded = Unbounded({
   subsets: ["latin"],
-  variable: "--font-bebas"
-})
-const sourceSans = Source_Sans_3({
-  subsets: ["latin"],
-  variable: "--font-source-sans",
-  weight: ["300", "400", "500", "600", "700"]
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-display",
 })
 
-// 根布局的默认元数据（会被页面级元数据覆盖）
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-body",
+})
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-mono",
+})
+
 export const metadata: Metadata = {
   ...generateSEOMetadata({
     title: "John Doe - Solution Architect & Builder",
@@ -36,6 +41,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: "#04060B",
 }
 
 export default function RootLayout({
@@ -44,8 +50,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${bebasNeue.variable} ${sourceSans.variable}`}>
-      <body className={`${sourceSans.className} antialiased`}>{children}</body>
+    <html
+      lang="en"
+      className={`dark ${unbounded.variable} ${manrope.variable} ${jetbrains.variable}`}
+    >
+      <body className="font-body antialiased bg-ink text-foam selection:bg-cyan/30 selection:text-foam">
+        {children}
+      </body>
     </html>
   )
 }

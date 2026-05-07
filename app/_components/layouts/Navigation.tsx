@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ArrowUpRight } from "lucide-react"
 import { NavItem, NavigationProps } from "@/types"
 
 const DEFAULT_NAV_ITEMS: NavItem[] = [
@@ -16,9 +16,7 @@ export default function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProp
   const pathname = usePathname()
 
   const isActive = (href: string) => {
-    if (href === "/") {
-      return pathname === "/"
-    }
+    if (href === "/") return pathname === "/"
     return pathname.startsWith(href)
   }
 
@@ -26,16 +24,27 @@ export default function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProp
     <nav className="fixed top-0 left-0 right-0 z-50 minimal-nav">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo / Brand */}
+          {/* Brand chip */}
           <Link
             href="/"
-            className="font-display text-2xl text-black dark:text-white hover:text-accent transition-colors"
+            className="flex items-center gap-3 group"
           >
-            JD
+            <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-cyan/30 to-violet/30 ring-1 ring-cyan/40 shadow-glow-cyan transition-transform group-hover:scale-105">
+              <span className="absolute inset-0 rounded-md bg-grid-fine opacity-50" />
+              <span className="font-display text-sm font-bold text-foam relative">JD</span>
+            </span>
+            <div className="leading-tight hidden sm:block">
+              <div className="font-display text-sm font-semibold text-foam tracking-tight">
+                JOHN<span className="text-cyan">.</span>DOE
+              </div>
+              <div className="font-mono text-[9px] tracking-[0.32em] text-ash uppercase">
+                AI · CORE · v4.7
+              </div>
+            </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-2">
             {items.map((item) => {
               const active = isActive(item.href)
               const isChat = item.href === "/chat"
@@ -45,9 +54,13 @@ export default function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProp
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="font-display text-lg px-6 py-2 bg-accent text-white border-2 border-accent hover:bg-black hover:border-black hover:text-white dark:hover:bg-white dark:hover:border-white dark:hover:text-black transition-colors cursor-pointer"
+                    className="chip-button group"
                   >
-                    CHAT
+                    <span className="relative flex h-1.5 w-1.5 items-center justify-center">
+                      <span className="absolute inset-0 rounded-full bg-cyan animate-pulse-dot" />
+                    </span>
+                    INITIATE CHAT
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </Link>
                 )
               }
@@ -56,64 +69,57 @@ export default function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProp
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`
-                    font-display text-lg uppercase tracking-wider transition-colors cursor-pointer
-                    ${active
-                      ? "text-accent"
-                      : "text-black dark:text-white hover:text-accent"
-                    }
-                  `}
+                  className={`px-4 py-2 font-mono text-[11px] tracking-[0.22em] uppercase transition-colors ${
+                    active ? "text-cyan" : "text-ash hover:text-foam"
+                  }`}
                 >
+                  {active && (
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan mr-2 align-middle shadow-glow-cyan" />
+                  )}
                   {item.label}
                 </Link>
               )
             })}
           </div>
 
-          {/* Mobile Navigation Button */}
+          {/* Mobile button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-black dark:text-white hover:text-accent transition-colors cursor-pointer"
+              className="p-2 text-foam hover:text-cyan transition-colors"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
+        {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t-2 border-black dark:border-white">
-            <div className="py-4 space-y-2">
+          <div className="md:hidden border-t border-cyan/10">
+            <div className="py-4 space-y-1">
               {items.map((item) => {
                 const active = isActive(item.href)
                 const isChat = item.href === "/chat"
-
                 if (isChat) {
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="block font-display text-xl py-3 px-4 bg-accent text-white text-center cursor-pointer"
+                      className="block chip-button text-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      CHAT
+                      INITIATE CHAT
                     </Link>
                   )
                 }
-
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`
-                      block font-display text-xl py-3 px-4 uppercase tracking-wider transition-colors cursor-pointer
-                      ${active
-                        ? "text-accent"
-                        : "text-black dark:text-white hover:text-accent"
-                      }
-                    `}
+                    className={`block py-3 px-4 font-mono text-xs uppercase tracking-[0.22em] transition-colors ${
+                      active ? "text-cyan" : "text-ash hover:text-foam"
+                    }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}

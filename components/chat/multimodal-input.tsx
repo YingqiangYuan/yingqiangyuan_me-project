@@ -46,9 +46,7 @@ export function MultimodalInput({
     chatRequestOptions?: ChatRequestOptions,
   ) => Promise<string | null | undefined>;
   handleSubmit: (
-    event?: {
-      preventDefault?: () => void;
-    },
+    event?: { preventDefault?: () => void },
     chatRequestOptions?: ChatRequestOptions,
   ) => void;
   className?: string;
@@ -103,62 +101,77 @@ export function MultimodalInput({
 
   return (
     <div className="relative w-full flex flex-col gap-3">
-      {/* Suggested Questions */}
+      {/* Suggested questions (only on empty chat) */}
       {messages.length === 0 && (
         <div className="flex flex-col gap-3">
-          <div className="border-2 border-black dark:border-white p-3 bg-white dark:bg-black">
-            <p className="font-display text-sm text-black dark:text-white text-center uppercase tracking-wider">
-              ASK ME DIRECTLY OR CLICK A SUGGESTION
-            </p>
+          <div className="flex items-center gap-3 px-1">
+            <span className="hud-label">[ SUGGESTED PROMPTS ]</span>
+            <span className="h-px flex-1 bg-cyan/10" />
+            <span className="font-mono text-[10px] tracking-[0.28em] text-ash uppercase">
+              tap to send
+            </span>
           </div>
 
-          <div className="max-h-[320px] sm:max-h-[280px] overflow-y-auto">
-            <div className="grid sm:grid-cols-2 gap-2 w-full pr-1">
-              {suggestedActions.map((suggestedAction, index) => (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: 0.05 * index }}
-                  key={`suggested-action-${suggestedAction.title}-${index}`}
+          <div className="grid sm:grid-cols-2 gap-2 w-full">
+            {suggestedActions.map((suggestedAction, index) => (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                transition={{ delay: 0.05 * index, duration: 0.4 }}
+                key={`suggested-action-${suggestedAction.title}-${index}`}
+              >
+                <button
+                  type="button"
+                  onClick={async () => {
+                    append({ role: "user", content: suggestedAction.action });
+                  }}
+                  className="group relative w-full text-left rounded-xl px-4 py-3 glass border border-cyan/10 hover:border-cyan/40 hover:shadow-glow-cyan transition-all"
                 >
-                  <Button
-                    variant="ghost"
-                    onClick={async () => {
-                      append({
-                        role: "user",
-                        content: suggestedAction.action,
-                      });
-                    }}
-                    className="group text-left border-2 border-black dark:border-white bg-white dark:bg-black hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black px-4 py-3 text-sm flex-1 gap-1 sm:flex-col w-full h-auto justify-start items-start transition-all cursor-pointer rounded-none"
-                  >
-                    <span className="font-display text-sm uppercase tracking-wider">
-                      {suggestedAction.title}
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] tracking-[0.3em] text-cyan uppercase">
+                      / {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-xs text-gray-600 dark:text-gray-400 group-hover:text-current leading-snug transition-colors normal-case">
-                      {suggestedAction.label}
+                    <span className="font-mono text-[9px] tracking-[0.3em] text-ash uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+                      ⏎ SEND
                     </span>
-                  </Button>
-                </motion.div>
-              ))}
-            </div>
+                  </div>
+                  <div className="mt-1.5 font-display text-sm text-foam tracking-tight">
+                    {suggestedAction.title}
+                  </div>
+                  <div className="mt-0.5 text-xs text-ash leading-snug">
+                    {suggestedAction.label}
+                  </div>
+                </button>
+              </motion.div>
+            ))}
           </div>
         </div>
       )}
 
-      {/* User Message Input Form */}
-      <div className="relative">
+      {/* Input shell */}
+      <div
+        className={cn(
+          "relative panel-edge rounded-2xl glass-strong p-1.5",
+          "transition-all duration-200 focus-within:shadow-glow-cyan focus-within:border-cyan/40"
+        )}
+      >
+        {/* prompt prefix */}
+        <div className="absolute top-3.5 left-4 flex items-center gap-2 pointer-events-none">
+          <span className="font-mono text-cyan text-sm select-none">{">"}</span>
+        </div>
+
         <Textarea
           ref={textareaRef}
-          placeholder="ENTER YOUR QUESTION..."
+          placeholder="ask the ai twin · ⏎ to transmit"
           value={input}
           onChange={handleInput}
           className={cn(
             "min-h-[24px] max-h-[calc(75dvh)] overflow-hidden resize-none !text-base",
-            "bg-white dark:bg-black border-2 border-black dark:border-white rounded-none",
-            "focus:border-accent focus:ring-accent focus:ring-2",
-            "text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 placeholder:uppercase placeholder:tracking-wider",
-            "pr-12",
+            "bg-transparent border-0 rounded-xl",
+            "focus:!ring-0 focus:!border-0 focus-visible:!ring-0 focus-visible:!ring-offset-0",
+            "text-foam placeholder:text-ash/70 placeholder:lowercase placeholder:tracking-wide",
+            "pl-9 pr-14 py-3",
             className,
           )}
           rows={3}
@@ -166,7 +179,6 @@ export function MultimodalInput({
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
-
               if (isLoading) {
                 toast.error("Please wait for the response to complete!");
               } else {
@@ -176,29 +188,52 @@ export function MultimodalInput({
           }}
         />
 
-        {isLoading ? (
-          <Button
-            className="p-2 h-fit absolute bottom-2 right-2 bg-white dark:bg-black border-2 border-black dark:border-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black cursor-pointer rounded-none"
-            onClick={(event) => {
-              event.preventDefault();
-              stop();
-              setMessages((messages) => sanitizeUIMessages(messages));
-            }}
-          >
-            <StopIcon size={16} />
-          </Button>
-        ) : (
-          <Button
-            className="p-2 h-fit absolute bottom-2 right-2 bg-accent border-2 border-accent hover:bg-black hover:border-black text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer rounded-none"
-            onClick={(event) => {
-              event.preventDefault();
-              submitForm();
-            }}
-            disabled={input.length === 0}
-          >
-            <ArrowUpIcon size={16} />
-          </Button>
-        )}
+        {/* HUD footer */}
+        <div className="flex items-center justify-between px-3 pb-2 pt-1">
+          <div className="flex items-center gap-3 font-mono text-[9px] tracking-[0.3em] text-ash uppercase">
+            <span className="hidden sm:inline">⌘ + ⏎ NEWLINE</span>
+            <span className="hidden sm:inline">·</span>
+            <span>{input.length} CHR</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-mint animate-pulse-dot" />
+              <span className="font-mono text-[9px] tracking-[0.3em] text-ash uppercase hidden sm:inline">
+                ENCRYPTED
+              </span>
+            </div>
+            {isLoading ? (
+              <Button
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  stop();
+                  setMessages((messages) => sanitizeUIMessages(messages));
+                }}
+                className="h-9 w-9 p-0 rounded-lg bg-substrate hover:bg-trace text-foam border border-signal/40 hover:border-signal transition-all"
+              >
+                <StopIcon size={14} />
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  submitForm();
+                }}
+                disabled={input.length === 0}
+                className={cn(
+                  "h-9 w-9 p-0 rounded-lg border transition-all",
+                  input.length === 0
+                    ? "bg-substrate text-ash border-cyan/10 cursor-not-allowed"
+                    : "bg-gradient-to-br from-cyan to-violet text-ink border-cyan/60 hover:shadow-glow-cyan"
+                )}
+              >
+                <ArrowUpIcon size={14} />
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

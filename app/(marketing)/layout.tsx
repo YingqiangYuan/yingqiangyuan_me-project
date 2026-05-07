@@ -1,4 +1,5 @@
 import Navigation from "@/app/_components/layouts/Navigation"
+import CircuitBackground from "@/app/_components/common/CircuitBackground"
 
 export default function MarketingLayout({
   children,
@@ -7,6 +8,7 @@ export default function MarketingLayout({
 }) {
   return (
     <>
+      <CircuitBackground />
       <Navigation />
       {children}
     </>

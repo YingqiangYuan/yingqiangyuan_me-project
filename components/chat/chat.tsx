@@ -97,43 +97,60 @@ export function Chat() {
       requestAnimationFrame(() => {
         messagesEndRef.current?.scrollIntoView({
           behavior: "smooth",
-          block: "end"
+          block: "end",
         });
       });
     }
   }, [messages.length]);
 
   return (
-    <div className="flex flex-col min-w-0 h-[calc(100dvh-64px)] bg-white dark:bg-black">
+    <div className="relative flex flex-col min-w-0 h-[calc(100dvh-64px)]">
       <div
         ref={messagesContainerRef}
-        className="flex flex-col min-w-0 gap-4 flex-1 overflow-y-scroll pt-4 px-4"
+        className="flex flex-col min-w-0 gap-4 flex-1 overflow-y-scroll pt-6 pb-2 px-4"
       >
-        {/* Initial AI Assistant Welcome Display */}
+        {/* Welcome card */}
         {messages.length === 0 && <Overview />}
 
-        {/* Context Banner */}
+        {/* Context banner */}
         {messages.length > 0 && isContextBannerVisible && (
           <div className="max-w-3xl mx-auto w-full">
-            <div className="border-2 border-black dark:border-white p-4 bg-white dark:bg-black">
+            <div className="relative glass rounded-xl p-4 panel-edge">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3 flex-1">
-                  <div className="w-10 h-10 bg-accent flex items-center justify-center shrink-0">
-                    <span className="font-display text-sm text-white">AI</span>
+                  <div className="relative h-9 w-9 shrink-0 rounded-lg p-[1px] bg-gradient-to-br from-cyan to-violet">
+                    <div className="h-full w-full rounded-[7px] bg-substrate flex items-center justify-center">
+                      <span className="font-display text-xs font-semibold text-cyan">
+                        AI
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-display text-sm text-black dark:text-white">AI ASSISTANT</h3>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                      I'm here to help you understand <span className="font-semibold text-accent">John Doe</span>'s unique value.
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-mono text-[11px] tracking-[0.3em] text-foam uppercase">
+                        AI TWIN
+                      </h3>
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-mint opacity-75 animate-ping" />
+                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-mint" />
+                      </span>
+                      <span className="font-mono text-[10px] tracking-[0.28em] text-mint uppercase">
+                        ACTIVE
+                      </span>
+                    </div>
+                    <p className="text-xs text-ash mt-1">
+                      Helping you understand{" "}
+                      <span className="text-cyan font-medium">John Doe</span>&apos;s work.
+                      Every answer is grounded in his real projects.
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsContextBannerVisible(false)}
-                  className="text-gray-400 hover:text-black dark:hover:text-white transition-colors shrink-0 cursor-pointer"
+                  className="text-ash hover:text-foam transition-colors shrink-0 cursor-pointer"
                   aria-label="Close"
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -157,14 +174,14 @@ export function Chat() {
           messages.length > 0 &&
           messages[messages.length - 1].role === "user" && <ThinkingMessage />}
 
-        {/* Auto-scroll anchor */}
         <div
           ref={messagesEndRef}
           className="shrink-0 min-w-[24px] min-h-[24px]"
         />
       </div>
 
-      <div className="p-4 bg-white dark:bg-black border-t-2 border-black dark:border-white">
+      <div className="relative px-4 pb-5 pt-3">
+        <div className="absolute inset-x-0 -top-6 h-6 bg-gradient-to-t from-ink to-transparent pointer-events-none" />
         <form className="flex mx-auto gap-2 w-full md:max-w-3xl">
           <MultimodalInput
             chatId={chatId}
