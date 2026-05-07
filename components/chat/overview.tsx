@@ -48,7 +48,7 @@ export const Overview = () => {
               <div className="h-full w-full rounded-full overflow-hidden bg-substrate ring-1 ring-cyan/30">
                 <Image
                   src={CDN_ASSETS.PROFILE_PHOTO}
-                  alt="John Doe"
+                  alt="YingQiang Yuan"
                   width={96}
                   height={96}
                   className="w-full h-full object-cover saturate-[0.85]"
