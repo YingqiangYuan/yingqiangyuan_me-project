@@ -4,23 +4,28 @@ import HomePageContent from "./HomePageContent"
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({
-    title: "John Doe - Solution Architect & Builder",
-    description: "Solution Architect and Open Source Developer with 150+ Python libraries, 10M+ monthly downloads, and 600+ repositories. Specialized in cloud architecture, AI, and enterprise solutions.",
+    title: "YingQiang Yuan - AI Developer & Data Engineer",
+    description: "AI Developer and Data Engineer building LLM-powered agentic systems, RAG pipelines, and enterprise data platforms on AWS. Experience spans Bedrock, Strands Agents, Delta Lake, Kinesis, and Snowflake across financial services and AI evaluation infrastructure.",
     keywords: [
-      "Open Source Developer",
-      "Python Libraries",
-      "Cloud Architecture",
-      "Enterprise Solutions",
-      "Automation",
-      "Software Engineering",
-      "Tech Leadership",
+      "AI Developer",
+      "Data Engineer",
+      "LLM",
+      "RAG",
+      "Agentic AI",
+      "AWS Bedrock",
+      "Strands Agents",
+      "Delta Lake",
+      "Snowflake",
+      "Data Pipelines",
+      "Prompt Engineering",
+      "LLM-as-Judge",
     ],
-    url: "https://johndoe.me",
-    ogTitle: "John Doe - Solution Architect & Open Source Builder",
-    ogDescription: "Experienced Solution Architect and prolific Open Source Developer. Creator of 160+ Python libraries with 10M+ monthly downloads. Specialized in cloud architecture, automation, and enterprise solutions.",
-    imageAlt: "John Doe Profile Photo - Solution Architect & Builder",
-    twitterTitle: "John Doe - Solution Architect & Builder",
-    twitterDescription: "Solution Architect and Open Source Developer with 160+ Python libraries, 10M+ monthly downloads, and 600+ repositories. Specialized in cloud architecture, AI, and enterprise solutions.",
+    url: "https://yingqiangyuan.me",
+    ogTitle: "YingQiang Yuan - AI Developer & Data Engineer",
+    ogDescription: "AI Developer focused on LLM-powered agentic applications, retrieval-augmented generation, and evaluation infrastructure on AWS, with production data engineering experience building real-time and batch pipelines for financial services.",
+    imageAlt: "YingQiang Yuan Profile Photo - AI Developer & Data Engineer",
+    twitterTitle: "YingQiang Yuan - AI Developer & Data Engineer",
+    twitterDescription: "AI Developer and Data Engineer building LLM-powered agents, RAG pipelines, and enterprise data lakes on AWS — Bedrock, Strands Agents, Delta Lake, Kinesis, Snowflake.",
   })
 }
 

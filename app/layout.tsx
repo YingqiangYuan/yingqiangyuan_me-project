@@ -24,9 +24,10 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata: Metadata = {
   ...generateSEOMetadata({
-    title: "John Doe - Solution Architect & Builder",
-    description: "Personal portfolio of John Doe, a Data/AI Architect specializing in open source solutions and enterprise architecture.",
-    keywords: ["Data Architect", "AI Architect", "Open Source", "Enterprise"],
+    title: "YingQiang Yuan - AI Developer & Data Engineer",
+    description: "Personal portfolio of YingQiang Yuan, an AI Developer and Data Engineer specializing in LLM-powered systems, agentic applications, RAG, and enterprise data platforms on AWS.",
+    keywords: ["AI Developer", "Data Engineer", "LLM", "RAG", "AWS", "Agentic AI"],
+    url: "https://yingqiangyuan.me",
   }),
   generator: 'v0.dev',
   icons: {
