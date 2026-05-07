@@ -59,15 +59,15 @@ export const Overview = () => {
 
           <p className="mt-6 hud-label">[ AI TWIN · BRIEFING ]</p>
           <h2 className="mt-3 font-display text-3xl sm:text-4xl font-light leading-tight">
-            <span className="text-foam-grad">HI, I&apos;M JOHN&apos;S</span>{" "}
+            <span className="text-foam-grad">HI, I&apos;M YINGQIANG&apos;S</span>{" "}
             <span className="text-cyan-grad font-medium">{METADATA.AI_ASSISTANT_NAME}</span>
           </h2>
 
           <p className="mt-4 text-ash max-w-md leading-relaxed">
-            Trained on John&apos;s full body of work. Ask me about his
+            Trained on Yingqiang&apos;s full body of work. Ask me about his
             <span className="text-foam"> projects</span>, the
-            <span className="text-cyan"> AI systems</span> he&apos;s shipped, or
-            anything in between.
+            <span className="text-cyan"> AI &amp; data systems</span> he&apos;s
+            shipped, or anything in between.
           </p>
 
           <div className="mt-7 flex flex-wrap items-center justify-center gap-2">

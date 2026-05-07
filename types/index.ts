@@ -20,13 +20,11 @@ export interface Project {
 // ============================================================================
 
 export interface AchievementStat {
-  number: string
-  description: string
-  color: string
-  borderColor: string
-  glowColor: string
-  icon: IconType
-  href: string
+  title: string
+  subtitle: string
+  tags: string[]
+  href?: string
+  accent?: "cyan" | "violet" | "mint" | "signal" | "amber"
 }
 
 // ============================================================================

@@ -140,8 +140,8 @@ export function Chat() {
                     </div>
                     <p className="text-xs text-ash mt-1">
                       Helping you understand{" "}
-                      <span className="text-cyan font-medium">John Doe</span>&apos;s work.
-                      Every answer is grounded in his real projects.
+                      <span className="text-cyan font-medium">Yingqiang Yuan</span>&apos;s
+                      work. Every answer is grounded in his real projects.
                     </p>
                   </div>
                 </div>

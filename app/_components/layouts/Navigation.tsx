@@ -24,21 +24,21 @@ export default function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProp
     <nav className="fixed top-0 left-0 right-0 z-50 minimal-nav">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Brand chip */}
+          {/* Brand */}
           <Link
             href="/"
             className="flex items-center gap-3 group"
           >
-            <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-md bg-gradient-to-br from-cyan/30 to-violet/30 ring-1 ring-cyan/40 shadow-glow-cyan transition-transform group-hover:scale-105">
-              <span className="absolute inset-0 rounded-md bg-grid-fine opacity-50" />
-              <span className="font-display text-sm font-bold text-foam relative">JD</span>
+            <span className="relative inline-flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-cyan opacity-70 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan shadow-glow-cyan" />
             </span>
-            <div className="leading-tight hidden sm:block">
-              <div className="font-display text-sm font-semibold text-foam tracking-tight">
-                JOHN<span className="text-cyan">.</span>DOE
+            <div className="leading-tight">
+              <div className="font-display text-sm sm:text-base font-medium text-foam tracking-tight">
+                Yingqiang<span className="text-cyan"> </span>Yuan
               </div>
-              <div className="font-mono text-[9px] tracking-[0.32em] text-ash uppercase">
-                AI · CORE · v4.7
+              <div className="font-mono text-[9px] tracking-[0.32em] text-ash uppercase hidden sm:block">
+                AI DEVELOPER · DATA ENGINEER
               </div>
             </div>
           </Link>

@@ -3,21 +3,58 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowUpRight, Cpu, Github, Linkedin, Sparkles } from "lucide-react"
+import { ArrowUpRight, Cpu, Github, Linkedin, Mail, Sparkles } from "lucide-react"
 
-const TELEMETRY = [
-  { label: "MODELS DEPLOYED", value: "12", trend: "+3" },
-  { label: "PIPELINES / DAY", value: "1.4K", trend: "+8.2%" },
-  { label: "TOKENS THIS WEEK", value: "84.2M", trend: "live" },
-  { label: "UPTIME 30D", value: "99.98%", trend: "stable" },
+// Real skill groups from the resume
+const SKILL_GROUPS: { k: string; v: string }[] = [
+  { k: "AI / LLM", v: "Strands · RAG · LLM-as-Judge" },
+  { k: "AWS", v: "Bedrock · Lambda · Kinesis · S3" },
+  { k: "DATA", v: "Spark · Delta Lake · Polars · dbt" },
+  { k: "STREAMING", v: "Kafka · Kinesis · Step Functions" },
+  { k: "BACKEND", v: "FastAPI · Flask · Spring Boot" },
+  { k: "LANG", v: "Python · Java · TypeScript · SQL" },
+  { k: "DB", v: "Snowflake · Redshift · Postgres" },
+  { k: "DEVOPS", v: "Docker · GitHub Actions" },
 ]
+
+// Deterministic seeded random based on YYYY-MM-DD, normalized to 2M–20M.
+function tokenUsageForToday(): { value: number; seed: string } {
+  const d = new Date()
+  const seed = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+  let h = 2166136261 >>> 0
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i)
+    h = Math.imul(h, 16777619) >>> 0
+  }
+  // mix
+  h ^= h >>> 13
+  h = Math.imul(h, 1274126177) >>> 0
+  h ^= h >>> 16
+  const norm = (h % 1_000_000) / 1_000_000 // 0..1
+  const value = Math.round(2_000_000 + norm * 18_000_000)
+  return { value, seed }
+}
+
+function formatCompact(n: number): string {
+  if (n >= 1_000_000) {
+    const v = n / 1_000_000
+    return `${v.toFixed(v >= 10 ? 1 : 2)}M`
+  }
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`
+  return String(n)
+}
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false)
+  const [tokens, setTokens] = useState<{ value: number; seed: string } | null>(null)
 
   useEffect(() => {
     setMounted(true)
+    setTokens(tokenUsageForToday())
   }, [])
+
+  const tokenLabel = tokens ? formatCompact(tokens.value) : "—"
+  const dailyPct = tokens ? Math.round(((tokens.value - 2_000_000) / 18_000_000) * 100) : 0
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8">
@@ -39,24 +76,24 @@ export default function Hero() {
           </div>
           <div className="hidden sm:flex items-center gap-2 mono-tag">
             <Cpu className="w-3 h-3 text-cyan" />
-            <span>v4.7 · OPUS / NEURAL FABRIC</span>
+            <span>OPEN TO RELOCATION · SANTA CLARA, CA</span>
           </div>
         </div>
 
         {/* Main grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* Left - editorial wordmark */}
+          {/* Left - editorial wordmark + headline */}
           <div
             className={`lg:col-span-7 transition-all duration-700 delay-100 ${
               mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
             }`}
           >
             <p className="hud-label mb-6">[ 01 / IDENTITY ]</p>
-            <h1 className="font-display text-display-xl font-light leading-[0.92] tracking-[-0.045em]">
-              <span className="block text-foam-grad">JOHN</span>
+            <h1 className="font-display text-display-lg font-light leading-[0.92] tracking-[-0.04em]">
+              <span className="block text-foam-grad">YINGQIANG</span>
               <span className="block">
-                <span className="text-cyan-grad font-medium">DOE</span>
-                <span className="ml-3 inline-block align-baseline text-cyan font-mono text-[clamp(1rem,1.6vw,1.4rem)] tracking-[0.32em]">
+                <span className="text-cyan-grad font-medium">YUAN</span>
+                <span className="ml-3 inline-block align-baseline text-cyan font-mono text-[clamp(0.85rem,1.4vw,1.25rem)] tracking-[0.32em]">
                   /AI
                 </span>
               </span>
@@ -65,15 +102,16 @@ export default function Hero() {
             <div className="mt-6 flex items-center gap-4">
               <div className="h-px flex-1 max-w-[6rem] bg-gradient-to-r from-cyan to-transparent" />
               <span className="font-mono text-[11px] tracking-[0.36em] text-cyan uppercase">
-                SOLUTION ARCHITECT · BUILDER
+                AI DEVELOPER · DATA ENGINEER
               </span>
             </div>
 
             <p className="mt-8 text-lg sm:text-xl text-ash max-w-xl leading-relaxed">
-              Designing intelligent systems where{" "}
-              <span className="text-foam">data, models &amp; humans</span> meet.
-              Author of <span className="text-cyan">150+ Python libraries</span>,
-              shipping production AI at <span className="text-violet">enterprise scale</span>.
+              Building <span className="text-foam">LLM-powered systems</span> that
+              solve real business problems — from{" "}
+              <span className="text-cyan">agentic applications</span> and{" "}
+              <span className="text-cyan">retrieval-augmented generation</span>{" "}
+              to <span className="text-violet">LLM evaluation infrastructure</span> on AWS.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-3">
@@ -83,7 +121,14 @@ export default function Hero() {
                 <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <a
-                href="https://example.com"
+                href="mailto:yingqiang.yuan@gmail.com"
+                className="chip-button-ghost"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                EMAIL
+              </a>
+              <a
+                href="https://github.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="chip-button-ghost"
@@ -92,7 +137,7 @@ export default function Hero() {
                 GITHUB
               </a>
               <a
-                href="https://example.com"
+                href="https://www.linkedin.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="chip-button-ghost"
@@ -103,13 +148,13 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right - telemetry / portrait card */}
+          {/* Right - portrait + token usage card */}
           <div
             className={`lg:col-span-5 transition-all duration-700 delay-200 ${
               mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
             }`}
           >
-            <div className="relative group">
+            <div className="relative group flex flex-col gap-4">
               {/* corner brackets */}
               <div className="absolute -inset-3 pointer-events-none opacity-60">
                 <div className="absolute top-0 left-0 w-5 h-5 border-l border-t border-cyan/60" />
@@ -118,8 +163,8 @@ export default function Hero() {
                 <div className="absolute bottom-0 right-0 w-5 h-5 border-r border-b border-cyan/60" />
               </div>
 
+              {/* Portrait card */}
               <div className="relative glass-strong rounded-2xl overflow-hidden p-5 panel-edge">
-                {/* card header */}
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-signal/80" />
@@ -127,109 +172,89 @@ export default function Hero() {
                     <span className="h-2 w-2 rounded-full bg-mint/80" />
                   </div>
                   <span className="font-mono text-[10px] tracking-[0.3em] text-ash uppercase">
-                    NODE://JD-CORE-01
+                    NODE://YINGQIANG-01
                   </span>
                 </div>
 
-                {/* Portrait */}
                 <div className="relative rounded-xl overflow-hidden border border-cyan/15">
-                  <div className="absolute inset-0 bg-grid-fine opacity-30 pointer-events-none" />
+                  <div className="absolute inset-0 bg-grid-fine opacity-25 pointer-events-none z-10" />
                   <Image
                     src="/images/profile.png"
-                    alt="John Doe"
+                    alt="Yingqiang Yuan"
                     width={640}
                     height={640}
-                    className="relative w-full h-72 sm:h-80 object-cover saturate-[0.85] contrast-[1.05] mix-blend-luminosity opacity-95"
+                    className="relative w-full h-72 sm:h-80 object-cover"
+                    priority
                   />
-                  {/* gradient sweep */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-substrate via-substrate/30 to-transparent" />
-                  {/* HUD overlay corner */}
-                  <div className="absolute top-3 left-3 flex items-center gap-2 px-2 py-1 rounded-md bg-ink/60 backdrop-blur border border-cyan/30">
+                  {/* subtle bottom gradient for legibility */}
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-substrate/85 to-transparent z-10" />
+                  {/* HUD overlay */}
+                  <div className="absolute top-3 left-3 z-20 flex items-center gap-2 px-2 py-1 rounded-md bg-ink/60 backdrop-blur border border-cyan/30">
                     <span className="relative flex h-1.5 w-1.5">
                       <span className="absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75 animate-ping" />
                       <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan" />
                     </span>
-                    <span className="font-mono text-[9px] tracking-[0.3em] text-cyan uppercase">REC · LIVE</span>
+                    <span className="font-mono text-[9px] tracking-[0.3em] text-cyan uppercase">
+                      AGENT · ACTIVE
+                    </span>
                   </div>
-                  <div className="absolute bottom-3 right-3 font-mono text-[9px] text-ash tracking-[0.3em] uppercase">
-                    LAT 12MS · 4K · 60FPS
+                  <div className="absolute bottom-3 right-3 z-20 font-mono text-[9px] text-ash tracking-[0.3em] uppercase">
+                    SCU · MS CS · 2025
                   </div>
-                </div>
-
-                {/* telemetry grid */}
-                <div className="mt-5 grid grid-cols-2 gap-2">
-                  {TELEMETRY.map((t) => (
-                    <div
-                      key={t.label}
-                      className="rounded-lg border border-cyan/10 bg-substrate/60 p-3"
-                    >
-                      <div className="hud-label">{t.label}</div>
-                      <div className="mt-1 flex items-baseline justify-between">
-                        <span className="font-display text-2xl text-foam">{t.value}</span>
-                        <span className="font-mono text-[10px] text-mint tracking-[0.18em] uppercase">
-                          {t.trend}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* spectrum bar */}
-                <div className="mt-4 flex items-end gap-[3px] h-10">
-                  {Array.from({ length: 38 }).map((_, i) => {
-                    const heights = [25, 60, 35, 80, 45, 65, 90, 50, 70, 40, 30, 75, 55, 95, 60, 35, 80, 45]
-                    const h = heights[i % heights.length]
-                    return (
-                      <span
-                        key={i}
-                        className="flex-1 rounded-sm"
-                        style={{
-                          height: `${h}%`,
-                          background:
-                            i % 7 === 0
-                              ? "linear-gradient(180deg, #FF4FB8, #7C5CFF)"
-                              : "linear-gradient(180deg, #5BE9FF, rgba(91,233,255,0.15))",
-                          opacity: 0.55 + (h / 100) * 0.45,
-                        }}
-                      />
-                    )
-                  })}
-                </div>
-
-                <div className="mt-3 flex items-center justify-between font-mono text-[10px] text-ash uppercase tracking-[0.24em]">
-                  <span>SIGNAL · CYAN.PRIMARY</span>
-                  <span className="text-cyan">▲ +14.2%</span>
                 </div>
               </div>
 
-              {/* offset chip */}
-              <div className="hidden sm:flex absolute -bottom-5 -right-5 items-center gap-2 px-3 py-2 rounded-lg glass shadow-glow-cyan">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan animate-pulse-dot" />
-                <span className="font-mono text-[10px] tracking-[0.28em] text-cyan uppercase">
-                  GPU.A100 × 8
-                </span>
+              {/* Token Usage card */}
+              <div className="relative glass-strong rounded-2xl p-5 panel-edge">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="hud-label">TOKEN USAGE / 24H</span>
+                  </div>
+                  <span className="flex items-center gap-1.5">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-mint opacity-75 animate-ping" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-mint" />
+                    </span>
+                    <span className="font-mono text-[9px] tracking-[0.3em] text-mint uppercase">
+                      LIVE
+                    </span>
+                  </span>
+                </div>
+
+                <div className="mt-3 flex items-baseline gap-3">
+                  <span className="font-display text-5xl sm:text-6xl font-light tracking-tight text-foam-grad tabular-nums">
+                    {tokenLabel}
+                  </span>
+                  <span className="font-mono text-[11px] tracking-[0.24em] text-cyan uppercase">
+                    tokens
+                  </span>
+                </div>
+
+                {/* progress bar */}
+                <div className="mt-4 h-1.5 rounded-full bg-substrate overflow-hidden border border-cyan/10">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-cyan via-violet to-signal transition-all duration-700"
+                    style={{ width: `${Math.max(6, dailyPct)}%` }}
+                  />
+                </div>
+
+                <div className="mt-3 flex items-center justify-between font-mono text-[10px] tracking-[0.24em] text-ash uppercase">
+                  <span>// SEED · {tokens?.seed ?? "—"}</span>
+                  <span className="text-cyan">{dailyPct}% OF DAILY BAND</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Marquee ticker */}
+        {/* Resume skill ticker */}
         <div className="mt-16 relative overflow-hidden border-y border-cyan/10 py-3">
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-ink to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-ink to-transparent z-10 pointer-events-none" />
           <div className="flex gap-12 whitespace-nowrap animate-ticker font-mono text-[11px] tracking-[0.32em] uppercase">
             {Array.from({ length: 2 }).map((_, dup) => (
               <div key={dup} className="flex gap-12 shrink-0 pr-12">
-                {[
-                  { k: "PYTHON", v: "150+ libs" },
-                  { k: "AWS", v: "certified" },
-                  { k: "LLM OPS", v: "vLLM · Ray" },
-                  { k: "DATA", v: "Snowflake · DuckDB" },
-                  { k: "RAG", v: "vector + graph" },
-                  { k: "AGENTS", v: "tools · routing" },
-                  { k: "EDGE", v: "GPU · CUDA" },
-                  { k: "OPEN SOURCE", v: "10M+ DL/mo" },
-                ].map((tag) => (
+                {SKILL_GROUPS.map((tag) => (
                   <span key={tag.k + dup} className="flex items-center gap-2 text-ash">
                     <span className="text-cyan">◇</span>
                     <span className="text-foam">{tag.k}</span>

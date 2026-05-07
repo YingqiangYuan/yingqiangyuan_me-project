@@ -6,25 +6,27 @@ import Link from "next/link"
 const CHANNELS = [
   {
     label: "EMAIL",
-    handle: "sanhe@johndoe.me",
+    handle: "yingqiang.yuan@gmail.com",
     icon: Mail,
-    href: "mailto:sanhe@johndoe.me",
+    href: "mailto:yingqiang.yuan@gmail.com",
     accent: "from-cyan/40 to-cyan/10 text-cyan",
     primary: true,
   },
   {
     label: "LINKEDIN",
-    handle: "/in/johndoe",
+    handle: "/in/yingqiang-yuan",
     icon: Linkedin,
-    href: "https://example.com",
+    href: "https://www.linkedin.com/",
     accent: "from-violet/40 to-violet/10 text-violet",
+    primary: false,
   },
   {
     label: "GITHUB",
-    handle: "@johndoe",
+    handle: "@yingqiang-yuan",
     icon: Github,
-    href: "https://example.com",
+    href: "https://github.com/",
     accent: "from-foam/30 to-foam/5 text-foam",
+    primary: false,
   },
 ]
 

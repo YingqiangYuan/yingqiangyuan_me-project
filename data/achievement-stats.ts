@@ -1,15 +1,48 @@
-import { FaPython } from "react-icons/fa"
-import { PenTool, Sparkles } from "lucide-react"
 import { AchievementStat } from "@/types"
 
+// 6 placeholder slots — fill in title / subtitle / tags later.
+// Layout renders 2 rows × 3 cols.
 export const achievementStats: AchievementStat[] = [
   {
-    number: "...",
-    description: "...",
-    color: "text-primary",
-    borderColor: "border-primary",
-    glowColor: "shadow-primary/20",
-    icon: FaPython,
-    href: "...",
+    title: "",
+    subtitle: "",
+    tags: [],
+    href: "",
+    accent: "cyan",
+  },
+  {
+    title: "",
+    subtitle: "",
+    tags: [],
+    href: "",
+    accent: "violet",
+  },
+  {
+    title: "",
+    subtitle: "",
+    tags: [],
+    href: "",
+    accent: "mint",
+  },
+  {
+    title: "",
+    subtitle: "",
+    tags: [],
+    href: "",
+    accent: "signal",
+  },
+  {
+    title: "",
+    subtitle: "",
+    tags: [],
+    href: "",
+    accent: "amber",
+  },
+  {
+    title: "",
+    subtitle: "",
+    tags: [],
+    href: "",
+    accent: "cyan",
   },
 ]
