@@ -37,14 +37,21 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Header column */}
           <div className="lg:col-span-5">
-            <p className="hud-label mb-3">[ 03 / TRANSMIT ]</p>
+            <p className="hud-label mb-3">[ 03 / GET IN TOUCH ]</p>
             <h2 className="font-display text-display-md font-light leading-tight">
-              <span className="text-foam-grad">OPEN A</span>{" "}
-              <span className="text-cyan-grad font-medium">CHANNEL</span>
+              <span className="text-foam-grad">LET&apos;S</span>{" "}
+              <span className="text-cyan-grad font-medium">BUILD TOGETHER</span>
             </h2>
             <p className="mt-6 text-ash text-lg leading-relaxed max-w-md">
-              Building an AI product, a data platform, or just curious how it
-              all fits together? I read every signal.
+              I&apos;m a recent <span className="text-foam">MS CS graduate</span>{" "}
+              actively looking for{" "}
+              <span className="text-cyan">new-grad / full-time roles</span> in
+              AI engineering or data engineering. Three internships in,
+              shipping production systems on AWS, and ready to bring that
+              energy to your team.
+            </p>
+            <p className="mt-3 mono-tag">
+              ✦ OPEN TO RELOCATION · BASED IN SANTA CLARA, CA
             </p>
 
             <Link
@@ -52,7 +59,7 @@ export default function ContactSection() {
               className="mt-8 inline-flex items-center gap-2 chip-button group"
             >
               <MessageSquareCode className="w-3.5 h-3.5" />
-              ASK MY AI TWIN INSTEAD
+              ASK MY AI TWIN FIRST
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
