@@ -7,16 +7,16 @@
   {
     "title": "🤖 AI Expertise",
     "label": "AI Applications",
-    "action": "What AI application has John built?"
+    "action": "What AI application has YingQiang built?"
   },
   {
     "title": "📊 Data Expertise",
     "label": "Data engineering and analytics work",
-    "action": "Tell me about John's experience working with data."
+    "action": "Tell me about YingQiang's experience working with data."
   },
   {
     "title": "🔧 Technical Skills",
     "label": "Technologies and certifications",
-    "action": "What technologies does John specialize in?"
+    "action": "What technologies does YingQiang specialize in?"
   }
 ]
