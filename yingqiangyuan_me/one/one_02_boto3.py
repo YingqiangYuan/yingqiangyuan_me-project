@@ -33,6 +33,7 @@ class Boto3Mixin:
         """Create a boto3 session with configured AWS credentials."""
         return self.bsm.boto_ses
 
+    @cached_property
     def bedrock_runtime_client(self: "One") -> "BedrockRuntimeClient":
         """Get the Bedrock Runtime client for invoking models."""
         return self.boto_ses.client("bedrock-runtime")

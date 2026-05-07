@@ -36,7 +36,7 @@ How it works
 
 Example usage::
 
-    from smb_loan_ai.config import config
+    from yingqiangyuan_me.config import config
 
     # Anywhere in your code - no environment checks needed
     session = boto3.Session(
