@@ -172,12 +172,20 @@ async def handle_chat_data(request: Request, protocol: str = Query("data")):
     output_text = chat_session.debug_response(response)
 
     # --- Atomically record token spend for this invocation ---
-    # Bedrock Converse returns per-call token totals on response.usage; we feed
-    # those straight into the monthly DynamoDB counter via an atomic ADD so
-    # concurrent requests can't lose updates.
+    # Bedrock Converse splits input usage across three fields when prompt
+    # caching is enabled: inputTokens is only the *uncached* delta, while the
+    # system prompt + knowledge base (the parts wrapped in cachePoint) are
+    # billed under cacheReadInputTokens (hit) or cacheWriteInputTokens (first
+    # call). For quota purposes we want the full work the model processed, so
+    # sum all three.
     try:
-        input_tokens = int(response.usage.inputTokens or 0)
-        output_tokens = int(response.usage.outputTokens or 0)
+        usage_raw = response.usage.boto3_raw_data
+        input_tokens = (
+            int(usage_raw.get("inputTokens") or 0)
+            + int(usage_raw.get("cacheReadInputTokens") or 0)
+            + int(usage_raw.get("cacheWriteInputTokens") or 0)
+        )
+        output_tokens = int(usage_raw.get("outputTokens") or 0)
         increment_usage(
             one.bsm,
             input_tokens=input_tokens,

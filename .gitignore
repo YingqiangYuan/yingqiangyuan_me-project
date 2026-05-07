@@ -1,6 +1,8 @@
 # User Settings
 .claude/claude-code-messages.md
+.claude/scheduled_tasks.lock
 .claude/skills/lesson-smith*
+.claude/skills/learn-this-project-meta*
 .idea
 tmp
 
