@@ -4,7 +4,14 @@
         "defaultMode": "acceptEdits",
         "deny": [
             "Bash(git commit*)",
-            "Bash(git push*)"
+            "Bash(git push*)",
+            "Read(**/.env)",
+            "Bash(cat **/.env)",
+            "Bash(head **/.env)",
+            "Bash(tail **/.env)",
+            "Bash(less **/.env)",
+            "Bash(more **/.env)",
+            "Bash(grep * **/.env)"
         ],
         "allow": [
             "Read(========== Read Section ==========)",
