@@ -215,14 +215,14 @@ export default function Hero() {
                   </span>
                 </div>
 
-                <div className="relative rounded-xl overflow-hidden border border-cyan/15">
+                <div className="relative aspect-square rounded-xl overflow-hidden border border-cyan/15">
                   <div className="absolute inset-0 bg-grid-fine opacity-25 pointer-events-none z-10" />
                   <Image
                     src="/images/profile.png"
                     alt="Yingqiang Yuan"
                     width={640}
                     height={640}
-                    className="relative w-full h-72 sm:h-80 object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
                     priority
                   />
                   {/* subtle bottom gradient for legibility */}
