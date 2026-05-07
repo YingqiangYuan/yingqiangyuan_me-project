@@ -1,6 +1,7 @@
 "use client"
 
-import { Mail, Github, Linkedin, ArrowUpRight, MessageSquareCode } from "lucide-react"
+import { Mail, ArrowUpRight, MessageSquareCode } from "lucide-react"
+import { FaGithub, FaLinkedin } from "react-icons/fa6"
 import Link from "next/link"
 
 const CHANNELS = [
@@ -15,7 +16,7 @@ const CHANNELS = [
   {
     label: "LINKEDIN",
     handle: "/in/yingqiang-yuan",
-    icon: Linkedin,
+    icon: FaLinkedin,
     href: "https://www.linkedin.com/in/yingqiang-yuan",
     accent: "from-violet/40 to-violet/10 text-violet",
     primary: false,
@@ -23,7 +24,7 @@ const CHANNELS = [
   {
     label: "GITHUB",
     handle: "@yingqiang-yuan",
-    icon: Github,
+    icon: FaGithub,
     href: "https://github.com/YingqiangYuan",
     accent: "from-foam/30 to-foam/5 text-foam",
     primary: false,
