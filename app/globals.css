@@ -1,0 +1,227 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Font Variables */
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-source-sans: "Source Sans 3", sans-serif;
+  --font-inter: "Inter", sans-serif;
+
+  /* Option B: Bold Black & White */
+  --background: #FFFFFF;
+  --foreground: #000000;
+  --surface: #FFFFFF;
+
+  /* Card */
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+
+  /* Popover */
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 0%;
+
+  /* Primary (Black) */
+  --primary: 0 0% 0%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary */
+  --secondary: 240 4% 96%;
+  --secondary-foreground: 0 0% 0%;
+
+  /* Muted */
+  --muted: 240 4% 96%;
+  --muted-foreground: 240 4% 46%;
+
+  /* Accent (Electric Blue) */
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+
+  /* Destructive */
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Border & Input */
+  --border: 0 0% 0%;
+  --input: 240 6% 90%;
+  --ring: 217 91% 60%;
+
+  /* Chart Colors */
+  --chart-1: 217 91% 60%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+
+  /* Radius - Sharp corners for bold style */
+  --radius: 0px;
+
+  /* Sidebar */
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 0 0% 0%;
+  --sidebar-primary: 217 91% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 4% 96%;
+  --sidebar-accent-foreground: 0 0% 0%;
+  --sidebar-border: 0 0% 0%;
+  --sidebar-ring: 217 91% 60%;
+}
+
+.dark {
+  /* Dark Mode */
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --surface: #0A0A0A;
+
+  /* Card */
+  --card: 0 0% 4%;
+  --card-foreground: 0 0% 100%;
+
+  /* Popover */
+  --popover: 0 0% 4%;
+  --popover-foreground: 0 0% 100%;
+
+  /* Primary */
+  --primary: 0 0% 100%;
+  --primary-foreground: 0 0% 0%;
+
+  /* Secondary */
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 100%;
+
+  /* Muted */
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+
+  /* Accent */
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+
+  /* Destructive */
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Border & Input */
+  --border: 0 0% 100%;
+  --input: 0 0% 15%;
+  --ring: 217 91% 60%;
+
+  /* Sidebar */
+  --sidebar-background: 0 0% 4%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: 217 91% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 0 0% 15%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 0 0% 100%;
+  --sidebar-ring: 217 91% 60%;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    font-family: var(--font-source-sans), var(--font-inter), sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-bebas), var(--font-inter), sans-serif;
+    @apply font-normal tracking-wide uppercase;
+  }
+}
+
+@layer components {
+  /* Bold Card - Sharp edges, black border */
+  .bold-card {
+    @apply bg-white dark:bg-black border-2 border-black dark:border-white p-6;
+    @apply shadow-bold hover:shadow-bold-accent transition-shadow duration-200;
+    @apply cursor-pointer;
+  }
+
+  /* Bold Button */
+  .bold-button {
+    @apply bg-black text-white dark:bg-white dark:text-black;
+    @apply border-2 border-black dark:border-white;
+    @apply px-8 py-4 font-display text-xl uppercase tracking-wider;
+    @apply hover:bg-accent hover:border-accent hover:text-white;
+    @apply transition-colors duration-200 cursor-pointer;
+  }
+
+  /* Bold Accent Button */
+  .bold-button-accent {
+    @apply bg-accent text-white;
+    @apply border-2 border-accent;
+    @apply px-8 py-4 font-display text-xl uppercase tracking-wider;
+    @apply hover:bg-black hover:border-black dark:hover:bg-white dark:hover:border-white dark:hover:text-black;
+    @apply transition-colors duration-200 cursor-pointer;
+  }
+
+  /* Minimal Navbar */
+  .minimal-nav {
+    @apply bg-white/95 dark:bg-black/95 backdrop-blur-sm;
+    @apply border-b-2 border-black dark:border-white;
+  }
+
+  /* Glass Card (for chat) */
+  .glass-card {
+    @apply bg-white/90 dark:bg-black/90 backdrop-blur-sm;
+    @apply border-2 border-black dark:border-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Accent underline */
+  .accent-underline {
+    @apply relative inline-block;
+  }
+
+  .accent-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-2 bg-accent -z-10;
+  }
+}
+
+/* Custom scrollbar - Bold style */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFFFFF;
+  border-left: 2px solid #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 2px solid #FFFFFF;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #FFFFFF;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
